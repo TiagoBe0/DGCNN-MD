@@ -273,7 +273,7 @@ class DumpDataset(Dataset):
     Extrae superficies usando OVITO
     """
     def __init__(self, data_dir, classes, n_points=256,
-                 use_augmentation=False, radius=2.0, smoothing=12):
+                 use_augmentation=False, radius=2.0, smoothing=12, cache_data=False):
         """
         Args:
             data_dir: directorio raíz con subdirectorios por clase
@@ -282,6 +282,7 @@ class DumpDataset(Dataset):
             use_augmentation: aplicar data augmentation
             radius: radio para construcción de superficie
             smoothing: nivel de suavizado
+            cache_data: cachear datos en memoria (usar con datasets pequeños)
         """
         self.data_dir = Path(data_dir)
         self.classes = classes
@@ -289,6 +290,7 @@ class DumpDataset(Dataset):
         self.use_augmentation = use_augmentation
         self.radius = radius
         self.smoothing = smoothing
+        self.cache_data = cache_data
 
         # Mapeo clase -> índice
         self.class_to_idx = {c: i for i, c in enumerate(classes)}
@@ -314,24 +316,44 @@ class DumpDataset(Dataset):
             count = sum(1 for _, c in self.samples if c == idx)
             print(f"  {class_name}: {count} muestras")
 
+        # Cache
+        self.cache = {} if cache_data else None
+        if cache_data:
+            print("⚠️  Cargando dumps en memoria (puede tardar)...")
+            for i in range(len(self.samples)):
+                filepath, label = self.samples[i]
+                try:
+                    points = load_dump_surface(filepath, self.n_points, self.radius, self.smoothing)
+                    self.cache[i] = (points, label)
+                except Exception as e:
+                    print(f"⚠️  Error cargando {filepath}: {e}")
+                    points = np.random.randn(self.n_points, 3).astype(np.float32)
+                    points = normalize_points(points)
+                    self.cache[i] = (points, label)
+            print("✅ Datos cacheados")
+
     def __len__(self):
         return len(self.samples)
 
     def __getitem__(self, idx):
-        filepath, label = self.samples[idx]
+        if self.cache is not None:
+            points, label = self.cache[idx]
+            points = points.copy()  # Copiar para no modificar cache
+        else:
+            filepath, label = self.samples[idx]
 
-        try:
-            points = load_dump_surface(
-                filepath,
-                self.n_points,
-                self.radius,
-                self.smoothing
-            )
-        except Exception as e:
-            print(f"⚠️  Error cargando {filepath}: {e}")
-            # Retornar puntos aleatorios en caso de error
-            points = np.random.randn(self.n_points, 3).astype(np.float32)
-            points = normalize_points(points)
+            try:
+                points = load_dump_surface(
+                    filepath,
+                    self.n_points,
+                    self.radius,
+                    self.smoothing
+                )
+            except Exception as e:
+                print(f"⚠️  Error cargando {filepath}: {e}")
+                # Retornar puntos aleatorios en caso de error
+                points = np.random.randn(self.n_points, 3).astype(np.float32)
+                points = normalize_points(points)
 
         # Augmentation
         if self.use_augmentation:
