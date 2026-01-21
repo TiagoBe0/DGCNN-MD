@@ -1,0 +1,8 @@
+# Agregar data augmentation
+python train_pointnet2.py \
+    --data data_pointnet \
+    --n_points 256 \
+    --epochs 50 \
+    --batch_size 8 \
+    --augment \
+    --save_dir modelo_pointnet

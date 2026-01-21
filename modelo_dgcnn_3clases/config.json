@@ -1,0 +1,19 @@
+{
+  "data": "data_pointnet_3clases",
+  "epochs": 10,
+  "batch_size": 16,
+  "lr": 0.001,
+  "n_points": 256,
+  "k": 20,
+  "dropout": 0.5,
+  "save_dir": "modelo_dgcnn_3clases",
+  "no_augment": false,
+  "patience": 20,
+  "best_acc": 72.52747252747253,
+  "best_epoch": 4,
+  "classes": [
+    "large",
+    "medium",
+    "small"
+  ]
+}

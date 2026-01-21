@@ -1,0 +1,20 @@
+{
+  "data": "data_pointnet",
+  "epochs": 10,
+  "batch_size": 16,
+  "lr": 0.001,
+  "n_points": 256,
+  "k": 20,
+  "dropout": 0.5,
+  "save_dir": "modelo_dgcnn",
+  "no_augment": false,
+  "patience": 20,
+  "best_acc": 53.2967032967033,
+  "best_epoch": 5,
+  "classes": [
+    "large_cluster",
+    "medium_cluster",
+    "single_vacancy",
+    "small_cluster"
+  ]
+}
