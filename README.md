@@ -1,13 +1,25 @@
-# PointNet++ para Análisis de Estructuras Atómicas
+# DGCNN-MD: Deep Learning para Análisis de Estructuras Atómicas
 
-**Autor:** Santiago  
-**Objetivo:** Adaptar PointNet++ para analizar simulaciones de dinámica molecular (LAMMPS)
+**Autor:** Santiago
+**Objetivo:** Aplicar redes neuronales de grafos dinámicos (DGCNN) para analizar simulaciones de dinámica molecular (LAMMPS)
 
 ---
 
 ## 📋 ¿Qué es esto?
 
-Este proyecto adapta **PointNet++** (red neuronal profunda para nubes de puntos 3D) para analizar estructuras atómicas de simulaciones LAMMPS. 
+Este proyecto implementa **DGCNN (Dynamic Graph CNN)** optimizado para GPU, diseñado para analizar estructuras atómicas de simulaciones LAMMPS con alta eficiencia y precisión.
+
+### 🆕 Nueva Implementación GPU
+
+Este repositorio ahora incluye una **implementación DGCNN optimizada para GPU** con características modernas:
+
+- ⚡ **Mixed Precision Training (AMP)**: 2-3x más rápido, 50% menos memoria
+- 🔥 **Multi-GPU Support**: Entrenamiento distribuido en múltiples GPUs
+- 🎯 **Gradient Accumulation**: Simula batches grandes en GPUs pequeñas
+- 📊 **TensorBoard Integration**: Monitoreo en tiempo real
+- 🚀 **Batch Inference**: Predicción optimizada para conjuntos grandes
+
+👉 **Ver [README_GPU.md](README_GPU.md) para documentación completa de la versión GPU** 
 
 ### Casos de uso
 - ✅ Clasificar estructuras con/sin defectos
@@ -18,9 +30,62 @@ Este proyecto adapta **PointNet++** (red neuronal profunda para nubes de puntos 
 
 ---
 
+---
+
+## 🏗️ Arquitectura del Proyecto
+
+El proyecto ahora contiene **dos implementaciones**:
+
+### 1. DGCNN GPU-Optimized (Recomendado) ⭐
+
+**Ubicación:** `dgcnn_gpu/`
+
+Implementación moderna optimizada para GPUs con:
+- Training con mixed precision (AMP)
+- Soporte multi-GPU
+- DataLoaders eficientes
+- Documentación completa
+
+```bash
+# Entrenar
+python dgcnn_gpu/train.py --data_dir data/ --classes vacancy cluster --mixed_precision
+
+# Predecir
+python dgcnn_gpu/predict.py --model outputs/dgcnn_gpu --input test/
+```
+
+📖 **Documentación completa:** [README_GPU.md](README_GPU.md)
+
+### 2. PointNet++ (Implementación Original)
+
+**Ubicación:** `Pointnet_Pointnet2_pytorch/` (si existe)
+
+Implementación original para referencia.
+
+---
+
 ## 🚀 Instalación Rápida
 
-### Requisitos previos
+### Para DGCNN GPU (Recomendado)
+
+```bash
+# 1. Crear entorno virtual
+python3 -m venv venv
+source venv/bin/activate
+
+# 2. Instalar PyTorch con CUDA
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Verificar instalación
+python test_installation.py
+```
+
+### Para PointNet++ (Implementación Legacy)
+
+#### Requisitos previos
 - Python 3.7 o superior
 - Linux (Ubuntu/Debian recomendado)
 - ~2 GB de espacio libre

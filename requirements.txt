@@ -1,0 +1,17 @@
+# DGCNN-MD GPU Requirements
+# Python 3.8+
+
+# Core dependencies
+torch>=1.12.0
+torchvision>=0.13.0
+numpy>=1.21.0
+tqdm>=4.64.0
+tensorboard>=2.10.0
+
+# Optional: para trabajar con archivos dump de LAMMPS
+# ovito>=3.7.0
+
+# Development (optional)
+# pytest>=7.0.0
+# black>=22.0.0
+# flake8>=4.0.0
