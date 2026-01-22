@@ -19,7 +19,23 @@ Este repositorio ahora incluye una **implementación DGCNN optimizada para GPU**
 - 📊 **TensorBoard Integration**: Monitoreo en tiempo real
 - 🚀 **Batch Inference**: Predicción optimizada para conjuntos grandes
 
-👉 **Ver [README_GPU.md](README_GPU.md) para documentación completa de la versión GPU** 
+👉 **Ver [README_GPU.md](README_GPU.md) para documentación completa de la versión GPU**
+
+### 🔥 Procesamiento de Base de Datos Dump
+
+¿Tienes archivos dump de LAMMPS? Nuevos scripts para procesarlos fácilmente:
+
+```bash
+# Procesamiento rápido
+./quick_process_dumps.sh -i db_octubre_fcc_ni -c vacancy,cluster
+
+# Entrenar con dumps
+python train_dump_example.py --data_dir data/ --classes vacancy --mixed_precision
+```
+
+📖 **Guías disponibles:**
+- [INICIO_RAPIDO_DUMPS.md](INICIO_RAPIDO_DUMPS.md) - Inicio rápido (5 minutos)
+- [DUMP_PROCESSING.md](DUMP_PROCESSING.md) - Guía completa de procesamiento
 
 ### Casos de uso
 - ✅ Clasificar estructuras con/sin defectos
